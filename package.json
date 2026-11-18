@@ -1,0 +1,12 @@
+{
+  "name": "sprout-qvac-arduino",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A local QVAC greenhouse helper with an Arduino App Lab custom Brick.",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "setup": "npm --prefix app/bricks/qvac/runtime ci --omit=dev --no-audit --no-fund",
+    "start": "npm --prefix app/bricks/qvac/runtime start"
+  }
+}
