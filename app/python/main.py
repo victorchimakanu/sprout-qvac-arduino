@@ -54,10 +54,11 @@ if __name__ == "__main__":
         else:
             print("Waiting for the local QVAC runtime...", flush=True)
             QVAC().wait_ready()
-            check = explain(25, 55)
-            print(f"QVAC Brick check: {check['text']}", flush=True)
-            QVAC().start_webview()
-            print("Sprout is ready. Open the web view on port 8765. Inputs are simulated.", flush=True)
+            from live_sensor import LiveSensor
+            sensor = LiveSensor()
+            sensor.start()
+            QVAC().start_webview(sensor_provider=sensor)
+            print("Sprout is ready on port 8765. Live DHT11 readings from D2; sample mode remains available.", flush=True)
     except (ValueError, RuntimeError) as error:
         raise SystemExit(str(error))
     if os.getenv("QVAC_DESKTOP") != "1":

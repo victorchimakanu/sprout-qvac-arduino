@@ -60,8 +60,12 @@ const server = http.createServer(async (req, res) => {
     catch { return send(res, 400, { error: 'Send a JSON object with a prompt string.' }); }
     let reading;
     if (req.url === '/sensor') {
-      try { reading = sensorFacts(data?.temperature, data?.humidity); }
+      try { reading = sensorFacts(data?.temperature, data?.humidity, data?.source ?? 'simulated'); }
       catch (error) { return send(res, 400, { error: error.message }); }
+      if (reading.source === 'live') {
+        reading.sensor = 'DHT11'; reading.pin = 2;
+        reading.capturedAt = data.capturedAt; reading.sequence = data.sequence;
+      }
       data = { prompt: sensorPrompt(reading) };
     }
     if (!data || typeof data.prompt !== 'string' || !data.prompt.trim() || data.prompt.length > 3000) {

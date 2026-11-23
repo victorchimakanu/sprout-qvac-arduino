@@ -2,11 +2,25 @@
 
 **A small greenhouse helper powered by QVAC, with an Arduino App Lab custom Brick.**
 
-Choose sample temperature and humidity readings. Sprout explains what they mean and suggests what to check. The AI runs on your computer, with no API key or cloud AI service.
+Use live DHT11 readings on an Arduino UNO Q, or choose sample readings in the standalone demo. Sprout explains what they mean and suggests what to check. AI runs locally on the device hosting Sprout, with no API key or cloud AI service.
 
 ![Sprout: choosing hot afternoon readings and getting a real local QVAC answer](docs/media/sprout-demo.gif)
 
 Real app footage from the Linux ARM App Lab developer runtime. The readings are simulated. [Watch the narrated demo](https://github.com/victorchimakanu/sprout-qvac-arduino/releases/download/v0.1.0/sprout-demo.mp4).
+
+## Live readings on Arduino UNO Q
+
+The UNO Q version now supports a **DHT11** connected to **GND, 3.3V and D2**. Live mode displays measured temperature and humidity, refreshing every few seconds. Click **Explain these readings** for a local QVAC explanation. **Sample data** retains the original simulated scenarios.
+
+The sensor is read on the MCU and passed to Linux using Arduino Bridge. Missing or stale readings display an error; they are never replaced with sample values. Each AI answer identifies the measured snapshot it explains. See [live DHT11 setup](docs/live-dht11.md).
+
+- [Wiring and implementation walkthrough](docs/live-dht11.md)
+- [Changes compared with the original project](docs/hardware-changes.md)
+- [Optional UNO Q storage setup](deploy/uno-q/README.md)
+- [Hardware test results](docs/verification/README.md) and [on-board checks](tools/hardware/README.md)
+- [Fork and pull request preparation](docs/contributing-hardware.md)
+
+Use the source from this hardware branch for live DHT11 support. The upstream **v0.1.0** downloads below are the original sample release and do not contain these hardware additions. The tested hardware route used on-board CLI setup and manual MCU upload, as documented in the walkthrough.
 
 ## Try it in 3 minutes
 
@@ -29,7 +43,7 @@ Open **[http://127.0.0.1:8765](http://127.0.0.1:8765)** when the terminal says `
 
 After the model downloads, answers run locally. Stop the app with `Ctrl+C`. Next time, just run `npm start`.
 
-## Use the custom Brick in App Lab
+## Original sample release in App Lab
 
 A Brick is a reusable part of an App Lab app. This one lets Python ask a local QVAC model for an answer.
 
@@ -37,12 +51,12 @@ A Brick is a reusable part of an App Lab app. This one lets Python ask a local Q
 2. Import it into App Lab with a supported board connected, then click **Run**.
 3. Wait for `Sprout is ready`, then open the web view on port **8765**.
 
-The official Linux ARM App Lab runtime passed import, build, Python Brick requests and browser tests. **A physical Arduino board test is still pending.** See the [App Lab guide and test details](docs/app-lab.md).
+The custom Brick has been verified on a **4 GB Arduino UNO Q with a live DHT11 on D2**. The earlier Linux ARM developer runtime also passed import, build, Python Brick requests and browser tests. See the [App Lab guide and test details](docs/app-lab.md).
 
 ## Useful details
 
 - QVAC SDK **0.24.0**, Qwen3 **1.7B Q4**, running on the CPU.
-- Sample readings only. No connected sensors or automatic hardware actions.
+- Live DHT11 readings on UNO Q, plus simulated sample mode. No automatic hardware actions.
 - Example targets, not crop-specific growing advice.
 - [Troubleshooting and the Python example](docs/app-lab.md#laptop-help).
 - Sample code: [MIT license](LICENSE). Fonts and branding: [third-party notices](THIRD_PARTY_NOTICES.md).
