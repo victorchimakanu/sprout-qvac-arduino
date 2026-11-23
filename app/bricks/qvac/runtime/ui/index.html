@@ -11,7 +11,7 @@
 <body>
   <header class="topbar">
     <a class="wordmark" href="/" aria-label="Sprout home">sprout<span class="brand-dot"></span></a>
-    <span class="demo-tag">Arduino custom Brick demo</span>
+    <span class="demo-tag">Arduino greenhouse monitor</span>
     <div class="connection" id="connection" role="status"><span class="status-dot"></span><span id="connection-text">Connecting to QVAC</span></div>
   </header>
   <main>
@@ -21,7 +21,7 @@
     </section>
     <section class="workspace" aria-label="Greenhouse helper">
       <div class="garden" aria-label="Decorative greenhouse illustration">
-        <div class="garden-top"><span>Your growing room</span><span class="sample-label">Sample readings</span></div>
+        <div class="garden-top"><span>Your growing room</span><span class="sample-label" id="reading-source">Live DHT11 · D2</span></div>
         <div class="greenhouse" aria-hidden="true">
           <div class="roof"></div><div class="frame"></div><div class="shelf"></div>
           <div class="plant plant-one"><div class="stem"></div><i class="leaf leaf-one"></i><i class="leaf leaf-two"></i><i class="leaf leaf-three"></i><div class="pot"></div></div>
@@ -29,33 +29,38 @@
           <div class="plant plant-three"><div class="stem"></div><i class="leaf leaf-one"></i><i class="leaf leaf-two"></i><i class="leaf leaf-three"></i><div class="pot"></div></div>
           <div class="sun"></div>
         </div>
-        <div class="garden-bottom"><span id="scene-name">A calm morning</span><span>Illustration</span></div>
+        <div class="garden-bottom"><span id="scene-name">Your greenhouse, right now</span><span>Illustration</span></div>
       </div>
       <div class="controls">
-        <div class="control-heading"><h2>How is it growing?</h2><p>Pick a moment, or change the readings.</p></div>
-        <div class="presets" aria-label="Sample conditions">
+        <div class="control-heading"><h2>How is it growing?</h2><p id="reading-help">Temperature and humidity from your connected sensor.</p></div>
+        <div class="mode-toggle" aria-label="Reading source">
+          <button class="mode-button active" id="mode-live" aria-pressed="true">Live DHT11</button>
+          <button class="mode-button" id="mode-sample" aria-pressed="false">Sample data</button>
+        </div>
+        <p id="sensor-note" class="sensor-note" role="status">Waiting for DHT11 on D2.</p>
+        <div class="presets" id="sample-presets" aria-label="Sample conditions" hidden>
           <button class="preset active" data-preset="morning" aria-pressed="true">Calm morning</button>
           <button class="preset" data-preset="hot" aria-pressed="false">Hot afternoon</button>
           <button class="preset" data-preset="cool" aria-pressed="false">Cool evening</button>
         </div>
         <div class="reading temperature-reading">
-          <div class="reading-head"><label for="temperature">Temperature</label><span id="temperature-status" class="reading-status">Within target</span></div>
-          <div class="value-row"><output id="temperature-value" for="temperature">25<span>°C</span></output><span class="target">Demo target<br>22 to 28°C</span></div>
-          <input type="range" id="temperature" min="5" max="45" value="25" step="1" aria-label="Temperature in degrees Celsius">
+          <div class="reading-head"><label for="temperature">Temperature</label><span id="temperature-status" class="reading-status">Waiting for sensor</span></div>
+          <div class="value-row"><output id="temperature-value" for="temperature">--<span>°C</span></output><span class="target">Demo target<br>22 to 28°C</span></div>
+          <input type="range" id="temperature" min="5" max="45" value="25" step="1" aria-label="Sample temperature in degrees Celsius" hidden disabled>
         </div>
         <div class="reading humidity-reading">
-          <div class="reading-head"><label for="humidity">Air humidity</label><span id="humidity-status" class="reading-status">Within target</span></div>
-          <div class="value-row"><output id="humidity-value" for="humidity">55<span>%</span></output><span class="target">Demo target<br>40 to 70%</span></div>
-          <input type="range" id="humidity" min="10" max="95" value="55" step="1" aria-label="Humidity in percent">
+          <div class="reading-head"><label for="humidity">Air humidity</label><span id="humidity-status" class="reading-status">Waiting for sensor</span></div>
+          <div class="value-row"><output id="humidity-value" for="humidity">--<span>%</span></output><span class="target">Demo target<br>40 to 70%</span></div>
+          <input type="range" id="humidity" min="10" max="95" value="55" step="1" aria-label="Sample humidity in percent" hidden disabled>
         </div>
         <button class="explain-button" id="explain" disabled><span id="button-text">Getting QVAC ready</span><span class="button-arrow" aria-hidden="true">↗</span></button>
-        <p class="control-note">Simulated inputs. Real local AI. No automatic hardware actions.</p>
+        <p class="control-note" id="control-note">Live sensor data. AI runs on the Arduino. No automatic hardware actions.</p>
       </div>
     </section>
     <section class="answer-section" aria-labelledby="answer-title" aria-live="polite" aria-busy="false" id="answer-section">
       <div class="answer-heading"><h2 id="answer-title">The numbers, made useful.</h2><span class="answer-origin">Explained by QVAC</span></div>
       <div class="answer-content" id="answer-content">
-        <p class="empty-answer" id="empty-answer">Your next step starts with a reading.<br><span>Try a hot afternoon and ask QVAC what it means.</span></p>
+        <p class="empty-answer" id="empty-answer">Your next step starts with a reading.<br><span>Ask QVAC about the live sensor readings.</span></p>
         <div class="answer-result" id="answer-result" hidden><p id="explanation"></p><div class="next-step"><span>What to check next</span><p id="next-step"></p></div><div class="answer-meta" id="answer-meta"></div></div>
         <p class="error" id="error" role="alert" hidden></p>
       </div>
